@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,11 +34,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.Visibility
 import com.example.spotifyapplication.R
+import com.example.spotifyapplication.ui.theme.DividerGrayColor
 import com.example.spotifyapplication.ui.theme.ExtraLightGray
 import com.example.spotifyapplication.ui.theme.GreenSpotify
 import com.example.spotifyapplication.ui.theme.LightBlue
@@ -41,7 +51,10 @@ import com.example.spotifyapplication.ui.theme.LightBlue
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+    var fullNameText by remember { mutableStateOf(TextFieldValue("")) }
+    var emailText by remember { mutableStateOf(TextFieldValue("")) }
+    var passwordText by rememberSaveable { mutableStateOf("") }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +83,7 @@ fun RegisterScreen() {
             Spacer(modifier = Modifier.weight(2f))
         }
 
-        Spacer(modifier = Modifier.height(47.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Text(
             text = "Register",
@@ -89,14 +102,14 @@ fun RegisterScreen() {
                 fontSize = 12.sp)
         }
 
-        Spacer(modifier = Modifier.height(38.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         OutlinedTextField(
             modifier = Modifier
                 .height(80.dp)
                 .width(334.dp),
-            value = text,
-            onValueChange = {text = it},
+            value = fullNameText,
+            onValueChange = {fullNameText = it},
             placeholder = { Text(text = "Full Name") },
             shape = RoundedCornerShape(30.dp)
         )
@@ -105,8 +118,8 @@ fun RegisterScreen() {
             modifier = Modifier
                 .height(80.dp)
                 .width(334.dp),
-            value = text,
-            onValueChange = {text = it},
+            value = emailText,
+            onValueChange = {emailText = it},
             placeholder = { Text(text = "Enter Email") },
             shape = RoundedCornerShape(30.dp)
         )
@@ -115,11 +128,26 @@ fun RegisterScreen() {
             modifier = Modifier
                 .height(80.dp)
                 .width(334.dp),
-            value = text,
-            onValueChange = {text = it},
+            value = passwordText,
+            onValueChange = {passwordText = it},
             placeholder = { Text(text = "Password") },
-            shape = RoundedCornerShape(30.dp)
+            shape = RoundedCornerShape(30.dp),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
+
+
+//        trailingIcon = {
+//            val image = if (passwordVisible)
+//                Icons.Filled.Visibility
+//            else Icons.Filled.VisibilityOff
+//
+//            val description = if (passwordVisible) "Hide password" else "Show password"
+//
+//            IconButton(onClick = {passwordVisible = !passwordVisible}){
+//                Icon(imageVector  = image, description)
+//            }
+//        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -134,6 +162,27 @@ fun RegisterScreen() {
                 text = "Creat Account",
                 color = Color.White,
                 fontSize = 20.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(21.dp))
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+            Divider(
+                modifier = Modifier.width(140.dp),
+                thickness = 1.dp,
+                color = DividerGrayColor
+            )
+            Spacer(modifier = Modifier.width(11.dp))
+            Text(text = "OR")
+            Spacer(modifier = Modifier.width(11.dp))
+            Divider(
+                modifier = Modifier.width(140.dp),
+                thickness = 1.dp,
+                color = DividerGrayColor
             )
         }
 
