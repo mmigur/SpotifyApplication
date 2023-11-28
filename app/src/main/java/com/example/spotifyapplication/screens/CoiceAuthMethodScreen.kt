@@ -22,12 +22,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.spotifyapplication.R
+import com.example.spotifyapplication.Screen
 import com.example.spotifyapplication.ui.theme.DividerGrayColor
 import com.example.spotifyapplication.ui.theme.GreenSpotify
 
 @Composable
-fun CoiseAuthMethodScreen() {
+fun CoiceAuthMethodScreen(
+    navController: NavController
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -70,7 +75,9 @@ fun CoiseAuthMethodScreen() {
                     .width(150.dp),
                 shape = RoundedCornerShape(30.dp),
                 colors = ButtonDefaults.buttonColors(GreenSpotify),
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    navController.navigate(Screen.Register.route)
+                }) {
                 Text(
                     text = "Register",
                     color = Color.White,
@@ -84,7 +91,9 @@ fun CoiseAuthMethodScreen() {
                     .width(150.dp),
                 shape = RoundedCornerShape(30.dp),
                 colors = ButtonDefaults.buttonColors(Color.White),
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    navController.navigate(Screen.SignIn.route)
+                }) {
                 Text(
                     text = "Sign In",
                     color = Color.Black,
@@ -94,3 +103,4 @@ fun CoiseAuthMethodScreen() {
         }
     }
 }
+

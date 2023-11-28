@@ -2,6 +2,7 @@ package com.example.spotifyapplication.screens
 
 import android.widget.TextView
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,7 +47,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.spotifyapplication.R
+import com.example.spotifyapplication.Screen
 import com.example.spotifyapplication.ui.theme.DividerGrayColor
 import com.example.spotifyapplication.ui.theme.ExtraLightGray
 import com.example.spotifyapplication.ui.theme.GreenSpotify
@@ -54,10 +57,12 @@ import com.example.spotifyapplication.ui.theme.LightBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SigIn() {
+fun SignInScreen(
+    navController: NavController
+) {
     var enterUserOrEmailText by remember { mutableStateOf(TextFieldValue("")) }
     var passwordText by rememberSaveable { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    val passwordVisible by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +74,9 @@ fun SigIn() {
             verticalAlignment = Alignment.CenterVertically,
             ) {
             FilledIconButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigateUp()
+                },
                 colors = IconButtonDefaults.filledIconButtonColors(containerColor = ExtraLightGray)
             ) {
                 Icon(
@@ -207,6 +214,9 @@ fun SigIn() {
                 color = Color.Black,
                 fontSize = 14.sp)
             Text(
+                modifier = Modifier.clickable {
+                      navController.navigate(Screen.Register.route)
+                },
                 text = "Register Now",
                 color = LightBlue,
                 fontSize = 14.sp)
