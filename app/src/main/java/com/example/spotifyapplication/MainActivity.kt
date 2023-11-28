@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.Navigation
+import com.example.spotifyapplication.screens.CoiseAuthMethodScreen
 import com.example.spotifyapplication.screens.RegisterScreen
 import com.example.spotifyapplication.ui.theme.SpotifyApplicationTheme
 
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SigIn()
+            CoiseAuthMethodScreen()
         }
     }
 }
