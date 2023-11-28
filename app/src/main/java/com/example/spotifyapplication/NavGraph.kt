@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.spotifyapplication.screens.CoiceAuthMethodScreen
+import com.example.spotifyapplication.screens.ProfileScreen
 import com.example.spotifyapplication.screens.RegisterScreen
 import com.example.spotifyapplication.screens.SignInScreen
 
@@ -17,9 +18,9 @@ fun SetupNavGraph(
         startDestination = Screen.CoiceAuth.route
     ){
         composable(
-            route = Screen.CoiceAuth.route
+            route = Screen.Profile.route
         ){
-            CoiceAuthMethodScreen(navController = navController)
+            ProfileScreen(navController = navController)
         }
         composable(
             route = Screen.Register.route

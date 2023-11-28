@@ -140,21 +140,23 @@ fun RegisterScreen(
             placeholder = { Text(text = "Password") },
             shape = RoundedCornerShape(30.dp),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                                id = R.drawable.visible_off,
+                            ),
+                        contentDescription = null)
+                else Icon( imageVector = ImageVector.vectorResource( id = R.drawable.visible_on,), contentDescription = null)
+
+                val description = if (passwordVisible) "Hide password" else "Show password"
+
+                IconButton(onClick = {passwordVisible = !passwordVisible}){
+                    image
+                }
+            }
         )
-
-
-//        trailingIcon = {
-//            val image = if (passwordVisible)
-//                Icons.Filled.Visibility
-//            else Icons.Filled.VisibilityOff
-//
-//            val description = if (passwordVisible) "Hide password" else "Show password"
-//
-//            IconButton(onClick = {passwordVisible = !passwordVisible}){
-//                Icon(imageVector  = image, description)
-//            }
-//        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
