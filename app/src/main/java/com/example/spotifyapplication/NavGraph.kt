@@ -18,9 +18,9 @@ fun SetupNavGraph(
         startDestination = Screen.CoiceAuth.route
     ){
         composable(
-            route = Screen.Profile.route
+            route = Screen.CoiceAuth.route
         ){
-            ProfileScreen(navController = navController)
+            CoiceAuthMethodScreen(navController = navController)
         }
         composable(
             route = Screen.Register.route

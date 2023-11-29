@@ -62,7 +62,7 @@ fun SignInScreen(
 ) {
     var enterUserOrEmailText by remember { mutableStateOf(TextFieldValue("")) }
     var passwordText by rememberSaveable { mutableStateOf("") }
-    val passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -133,7 +133,22 @@ fun SignInScreen(
             placeholder = {Text(text = "Password")},
             shape = RoundedCornerShape(30.dp),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                            id = R.drawable.visible_off,
+                        ),
+                        contentDescription = null)
+                else Icon( imageVector = ImageVector.vectorResource( id = R.drawable.visible_on,), contentDescription = null)
+
+                val description = if (passwordVisible) "Hide password" else "Show password"
+
+                IconButton(onClick = {passwordVisible = !passwordVisible}){
+                    image
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
