@@ -173,7 +173,9 @@ fun SignInScreen(
                 .width(325.dp),
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(GreenSpotify),
-            onClick = { /*TODO*/ }) {
+            onClick = {
+                navController.navigate(Screen.Home.route)
+            }) {
             Text(
                 text = "Sign In",
                 color = Color.White,

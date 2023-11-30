@@ -15,8 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             navController = rememberNavController()
-            //SetupNavGraph(navController = navController)
-            ProfileScreen(navController=navController)
+            SetupNavGraph(navController = navController)
         }
     }
 }

@@ -2,24 +2,45 @@ package com.example.spotifyapplication.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -34,10 +55,62 @@ import com.example.spotifyapplication.R
 import com.example.spotifyapplication.ui.theme.DividerGrayColor
 import com.example.spotifyapplication.ui.theme.ExtraLightGray
 
+data class SongModel(
+    val songName: String,
+    val artistName: String,
+    val trackDuration: String,
+    val painterResourceId: Int
+)
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavController) {
+    val songList = listOf(
+        SongModel(
+            songName = "Planet Her",
+            artistName = "Doja Cat",
+            trackDuration = "5:33",
+            painterResourceId = R.drawable.track_5
+        ),
+        SongModel(
+            songName = "Bad Habit",
+            artistName = "Steve Lacy",
+            trackDuration = "5:33",
+            painterResourceId = R.drawable.track_4
+        ),
+        SongModel(
+            songName = "Dont smile at me",
+            artistName = "Billie Eilish",
+            trackDuration = "5:33",
+            painterResourceId = R.drawable.track_1
+        ),
+        SongModel(
+            songName = "Super Freaky Girl",
+            artistName = "Nicki Minaj",
+            trackDuration = "5:33",
+            painterResourceId = R.drawable.track_3
+        ),
+        SongModel(
+            songName = "As It Was",
+            artistName = "Harry Styles",
+            trackDuration = "5:33",
+            painterResourceId = R.drawable.track_2
+        ),
+        SongModel(
+            songName = "As It Was",
+            artistName = "Harry Styles",
+            trackDuration = "5:33",
+            painterResourceId = R.drawable.track_2
+        ),
+        SongModel(
+            songName = "As It Was",
+            artistName = "Harry Styles",
+            trackDuration = "5:33",
+            painterResourceId = R.drawable.track_2
+        )
+    )
+
     Scaffold(
         modifier = Modifier.padding(top = 28.dp),
         topBar = {
@@ -63,10 +136,9 @@ fun ProfileScreen(navController: NavController) {
                     )
                 },
                 actions = {
-                    Image(
-                        painter = painterResource(id = R.drawable.more_vertical),
-                        contentDescription = null
-                    )
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = ImageVector.vectorResource(id = R.drawable.more_vertical), contentDescription = null)
+                    }
                 }
             )
         }
@@ -78,6 +150,7 @@ fun ProfileScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(40.dp))
+
             Image(
                 modifier = Modifier
                     .scale(3f),
@@ -92,7 +165,9 @@ fun ProfileScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
             )
+
             Spacer(modifier = Modifier.height(14.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -111,46 +186,20 @@ fun ProfileScreen(navController: NavController) {
                     color = DividerGrayColor
                 )
             }
-            Spacer(modifier = Modifier.height(44.dp))
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 50.dp)
-            ) {
-                TrackCardComponent(
-                    songName = "Dont smile at me",
-                    artistName = "Billie Eilish",
-                    trackDuration = "5:33",
-                    painterResourceId = R.drawable.track_1
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                TrackCardComponent(
-                    songName = "As It Was",
-                    artistName = "Harry Styles",
-                    trackDuration = "5:33",
-                    painterResourceId = R.drawable.track_2
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                TrackCardComponent(
-                    songName = "Super Freaky Girl",
-                    artistName = "Nicki Minaj",
-                    trackDuration = "5:33",
-                    painterResourceId = R.drawable.track_3
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                TrackCardComponent(
-                    songName = "Bad Habit",
-                    artistName = "Steve Lacy",
-                    trackDuration = "5:33",
-                    painterResourceId = R.drawable.track_4
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                TrackCardComponent(
-                    songName = "Planet Her",
-                    artistName = "Doja Cat",
-                    trackDuration = "5:33",
-                    painterResourceId = R.drawable.track_5
-                )
+            Spacer(modifier = Modifier.height(16.dp))
+            LazyColumn(
+                modifier = Modifier.fillMaxHeight(),
+                contentPadding = PaddingValues(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(32.dp)
+            ){
+                items(items = songList) { item ->
+                    TrackCardComponent(
+                        songName = item.songName,
+                        artistName = item.artistName,
+                        trackDuration = item.trackDuration,
+                        painterResourceId = item.painterResourceId,
+                    )
+                }
             }
         }
     }
@@ -174,16 +223,19 @@ fun TrackCardComponent(
         )
         Spacer(modifier = Modifier.width(40.dp))
         Column {
-            Text(text = songName)
+            Text(
+                text = songName,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
             Spacer(modifier = Modifier.height(5.dp))
             Text(text = artistName)
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(text = trackDuration)
         Spacer(modifier = Modifier.width(32.dp))
-        Image(
-            painter = painterResource(id = R.drawable.more_horizontal),
-            contentDescription = null
-        )
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(imageVector = ImageVector.vectorResource(id = R.drawable.more_horizontal), contentDescription = null)
+        }
     }
 }

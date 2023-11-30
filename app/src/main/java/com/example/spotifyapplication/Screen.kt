@@ -6,5 +6,4 @@ sealed class Screen(val route: String) {
     object Register: Screen(route = "register_screen")
     object SignIn: Screen(route = "sign_in_screen")
     object Profile: Screen(route = "profile_screen")
-    object FavoriteCollectionScreen: Screen(route = "favorite_collection_screen_route")
 }
