@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -61,11 +62,6 @@ import com.example.spotifyapplication.ui.theme.LightBlue
 fun RegisterScreen(
     navController: NavController
 ) {
-    val mContext = LocalContext.current
-    var fullNameText by remember { mutableStateOf(TextFieldValue("")) }
-    var emailText by remember { mutableStateOf(TextFieldValue("")) }
-    var passwordText by rememberSaveable { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -117,55 +113,15 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        OutlinedTextField(
-            modifier = Modifier
-                .testTag("fullNameTextField")
-                .height(80.dp)
-                .width(334.dp),
-            value = fullNameText,
-            onValueChange = {fullNameText = it},
-            placeholder = { Text(text = "Full Name") },
-            shape = RoundedCornerShape(30.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            modifier = Modifier
-                .testTag("emailTextField")
-                .height(80.dp)
-                .width(334.dp),
-            value = emailText,
-            onValueChange = {emailText = it},
-            placeholder = { Text(text = "Enter Email") },
-            shape = RoundedCornerShape(30.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            modifier = Modifier
-                .testTag("passwordTextField")
-                .height(80.dp)
-                .width(334.dp),
-            value = passwordText,
-            onValueChange = {passwordText = it},
-            placeholder = { Text(text = "Password") },
-            shape = RoundedCornerShape(30.dp),
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            trailingIcon = {
-                val image = if (passwordVisible)
-                    Icon(
-                        imageVector = ImageVector.vectorResource(
-                                id = R.drawable.visible_off,
-                            ),
-                        contentDescription = null)
-                else Icon( imageVector = ImageVector.vectorResource( id = R.drawable.visible_on,), contentDescription = null)
+        ValidateEmail()
 
-                val description = if (passwordVisible) "Hide password" else "Show password"
+        Spacer(modifier = Modifier.height(16.dp))
 
-                IconButton(onClick = {passwordVisible = !passwordVisible}){
-                    image
-                }
-            }
-        )
+        ValidatePassword()
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ValidatePasswordRepeat()
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -176,66 +132,7 @@ fun RegisterScreen(
             shape = RoundedCornerShape(30.dp),
             colors = ButtonDefaults.buttonColors(GreenSpotify),
             onClick = {
-                if (fullNameText.text.isNullOrEmpty()){
-                    Toast.makeText(
-                        mContext,
-                        "Input name field is null",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                else {
-                    if(fullNameText.text.length > 2){
-                        // shared
-                    }
-                }
 
-                if (emailText.text.isNullOrEmpty()){
-                    Toast.makeText(
-                        mContext,
-                        "Input email field is null",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                else{
-                    if (isEmailValid(emailText.text)) {
-                        // shared
-                    } else {
-                        Toast.makeText(
-                            mContext,
-                            "Input email field is not correct",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-
-                if (passwordText.isNullOrEmpty()){
-                    Toast.makeText(
-                        mContext,
-                        "Input password field is null",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                else{
-                    if(passwordText.length >= 8){
-                        if(containsOnlyDigitsAndSpecialCharacters(passwordText)){
-                            // shared
-                        }
-                        else{
-                            Toast.makeText(
-                                mContext,
-                                "Input password field is not correct",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                    else{
-                        Toast.makeText(
-                            mContext,
-                            "Input password field is short",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
             }) {
             Text(
                 text = "Creat Account",
@@ -301,6 +198,153 @@ fun RegisterScreen(
         }
     }
 }
+
+@Composable
+fun ValidateEmail() {
+    var email by remember { mutableStateOf("") }
+    Column (modifier = Modifier.padding(horizontal = 16.dp)) {
+        EmailTextField(email = email, onEmailChange = { email = it })
+
+        if (email.isNotEmpty()) {
+            if (isEmailValid(email)) {
+                Text(text = "Email is valid", color = Color.Blue)
+            } else {
+                Text(text = "Email is not valid", color = Color.Red)
+            }
+        }
+    }
+}
+@Composable
+fun ValidatePassword() {
+    var password by remember { mutableStateOf("") }
+    Column (
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+    ) {
+        PasswordTextField(password = password, onPasswordChange = { password = it })
+
+        if (password.isNotEmpty()) {
+            if(password.length >= 8){
+                if(!containsOnlyDigitsAndSpecialCharacters(password)){
+                    Text(text = "Password is not valid", color = Color.Red)
+                }
+                else{
+                    Text(text = "Password is valid", color = Color.Blue)
+                }
+            }
+            else{
+                Text(text = "Password is short", color = Color.Red)
+            }
+        }
+    }
+}
+@Composable
+fun ValidatePasswordRepeat() {
+    var password by remember { mutableStateOf("") }
+    Column (
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+    ) {
+        PasswordRepeatTextField(password = password, onPasswordChange = { password = it })
+
+        if (password.isNotEmpty()) {
+            if(password.length >= 8){
+                if(!containsOnlyDigitsAndSpecialCharacters(password)){
+                    Text(text = "Password is not valid", color = Color.Red)
+                }
+                else{
+                    Text(text = "Password is valid", color = Color.Blue)
+                }
+            }
+            else{
+                Text(text = "Password is short", color = Color.Red)
+            }
+        }
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PasswordRepeatTextField(
+    password: String,
+    onPasswordChange: (String) -> Unit
+) {
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    OutlinedTextField(
+        modifier = Modifier
+            .testTag("passwordTextField")
+            .height(80.dp)
+            .width(334.dp),
+        value = password,
+        onValueChange = {onPasswordChange(it)},
+        placeholder = { Text(text = "Password repeat") },
+        shape = RoundedCornerShape(30.dp),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon = {
+            val image = if (passwordVisible)
+                Icon(
+                    imageVector = ImageVector.vectorResource(
+                        id = R.drawable.visible_off,
+                    ),
+                    contentDescription = null)
+            else Icon( imageVector = ImageVector.vectorResource( id = R.drawable.visible_on,), contentDescription = null)
+            IconButton(onClick = {passwordVisible = !passwordVisible}){
+                image
+            }
+        }
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PasswordTextField(
+    password: String,
+    onPasswordChange: (String) -> Unit
+) {
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    OutlinedTextField(
+        modifier = Modifier
+            .testTag("passwordTextField")
+            .height(80.dp)
+            .width(334.dp),
+        value = password,
+        onValueChange = {onPasswordChange(it)},
+        placeholder = { Text(text = "Password") },
+        shape = RoundedCornerShape(30.dp),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon = {
+            val image = if (passwordVisible)
+                Icon(
+                    imageVector = ImageVector.vectorResource(
+                        id = R.drawable.visible_off,
+                    ),
+                    contentDescription = null)
+            else Icon( imageVector = ImageVector.vectorResource( id = R.drawable.visible_on,), contentDescription = null)
+            IconButton(onClick = {passwordVisible = !passwordVisible}){
+                image
+            }
+        }
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EmailTextField(
+    email: String,
+    onEmailChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .height(80.dp)
+            .width(334.dp),
+        value = email,
+        onValueChange = { onEmailChange(it) },
+        label = { Text("Email") },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        shape = RoundedCornerShape(30.dp)
+    )
+}
+
 
 fun isEmailValid(email: String): Boolean {
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
